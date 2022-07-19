@@ -12,7 +12,7 @@ describe('Wizard VerificationForm suite', () => {
   test('renders with the correct text', () => {
     render(<WizardVerificationForm onBack={() => null} onSubmit={() => null} />)
 
-    expect(screen.getByText('Tell us about yourself')).toBeTruthy()
+    expect(screen.getByText('Tell us about yourself 🙏')).toBeTruthy()
     expect(screen.getByText('Name')).toBeTruthy()
     expect(screen.getByText('Age')).toBeTruthy()
     expect(screen.getByText('Country')).toBeTruthy()

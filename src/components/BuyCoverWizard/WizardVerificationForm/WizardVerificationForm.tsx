@@ -12,6 +12,8 @@ import {
   VerificationForm,
 } from '../types'
 import { getAdditionalPremiumPhrase, getPremium, validate } from '../helpers'
+import Container from 'src/components/Container/Container'
+import styles from './WizardVerificationForm.module.css'
 
 interface Props {
   onSubmit: (form: VerificationForm) => void
@@ -157,8 +159,10 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
   }, [state])
 
   return (
-    <div>
-      <h1>Tell us about yourself</h1>
+    <Container align="center">
+      <div className={styles.header}>
+        <h1 className={styles.pageTitle}>Tell us about yourself 🙏</h1>
+      </div>
 
       <form onSubmit={handleSubmit}>
         {/* Name */}
@@ -268,12 +272,14 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
         {!!premium && <p>Your premium is: {premium}</p>}
 
         <div className="form-group">
-          <Button onClick={onBack}>Back</Button>
+          <Button appearance="outlined" onClick={onBack}>
+            Back
+          </Button>
 
           <Button type="submit">Next</Button>
         </div>
       </form>
-    </div>
+    </Container>
   )
 }
 

@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  background-color: var(--color-background-2);
+  padding: 2rem 3rem;
+  border-radius: 0.5em;
+  box-shadow: 0 0.5em 1em var(--color-transparent-1);
+}
+
+.pageTitle {
+  font-size: var(--text-heading-1);
+  font-weight: var(--text-medium);
+  color: var(--color-text-primary);
+  letter-spacing: 1px;
+}
