@@ -161,7 +161,10 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
   return (
     <Container align="center">
       <div className={styles.header}>
+        <span className={styles.segmentLeft} />
         <h1 className={styles.pageTitle}>Tell us about yourself 🙏</h1>
+        <span className={styles.segmentRight} />
+        <span />
       </div>
 
       <form onSubmit={handleSubmit}>
