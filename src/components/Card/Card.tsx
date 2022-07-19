@@ -1,10 +1,11 @@
+import styles from './Card.module.css'
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
 }
 
-const Card: React.FC<CardProps> = ({ children, ...props }) => {
+const Card: React.FC<CardProps> = ({ children, className, ...props }) => {
   return (
-    <div className="card" {...props}>
+    <div className={`${styles.cardContainer} ${className}`} {...props}>
       {children}
     </div>
   )
