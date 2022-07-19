@@ -4,6 +4,7 @@ import { COUNTRY_DETAILS, PACKAGES, WIZARD_FORM_STATE } from '../constants'
 import {
   CountryCodes,
   FormAction,
+  FormActionTypes,
   FormFields,
   FormState,
   FormValue,
@@ -32,15 +33,10 @@ const initialFormState: FormState = {
 
 const reducer = (state: FormState, action: FormAction) => {
   switch (action.type) {
-    case 'GET_INPUT':
+    case FormActionTypes.SET_INPUT:
       return {
         ...state,
-        [action.name]: {
-          ...state[action.name],
-          value: action.value,
-          error: action.error || '',
-          isDirty: action.isDirty || false,
-        },
+        ...action.payload,
       }
     default:
       return state
@@ -49,10 +45,15 @@ const reducer = (state: FormState, action: FormAction) => {
 
 const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
   const defaultFormState = localStorage.getItem(WIZARD_FORM_STATE)
-    ? JSON.parse(localStorage.getItem(WIZARD_FORM_STATE) as string)
+    ? (JSON.parse(
+        localStorage.getItem(WIZARD_FORM_STATE) as string
+      ) as FormState)
     : initialFormState
   const [state, dispatch] = useReducer(reducer, defaultFormState)
   const premium = getPremium(state)
+  const packageSelectionDisabled =
+    !!validate(state[FormFields.Country].value, FormFields.Country) ||
+    !!validate(state[FormFields.Age].value, FormFields.Age)
 
   // Update the respective fields on on change
   const handleChange = useCallback(
@@ -62,13 +63,18 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
         | React.ChangeEvent<HTMLSelectElement>
     ) => {
       const { name, value } = e.target
+      const formField = name as FormFields
 
       // Dispatch is responsible for updating the right field
       dispatch({
-        type: 'GET_INPUT',
-        name: name as FormFields,
-        value,
-        error: validate(value, name as FormFields),
+        type: FormActionTypes.SET_INPUT,
+        payload: {
+          [formField]: {
+            name,
+            value,
+            error: validate(value, formField),
+          },
+        },
       })
     },
     []
@@ -76,19 +82,25 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
 
   const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target
+    const formField = name as FormFields
 
     dispatch({
-      type: 'GET_INPUT',
-      name: name as FormFields,
-      value,
-      error: validate(value, name as FormFields),
-      isDirty: true,
+      type: FormActionTypes.SET_INPUT,
+      payload: {
+        [formField]: {
+          name,
+          value,
+          error: validate(value, formField),
+          isDirty: true,
+        },
+      },
     })
   }, [])
 
   // Check if the form has any errors
   const updateAndFindAllErrors = useCallback(() => {
-    const errors: Record<FormFields, string> = {} as Record<FormFields, string>
+    const errors = {} as Record<FormFields, string>
+    const payload = {} as Record<FormFields, FormValue>
 
     Object.keys(state).forEach((field) => {
       const formField = field as FormFields
@@ -98,21 +110,25 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
       if (error) {
         errors[formField] = error
 
-        dispatch({
-          type: 'GET_INPUT',
+        payload[formField] = {
           name: formField,
           value: value,
-          error: validate(value, formField),
+          error,
           isDirty: true,
-        })
+        }
       }
+    })
+
+    dispatch({
+      type: FormActionTypes.SET_INPUT,
+      payload,
     })
 
     return errors
   }, [state])
 
   // Submit the form
-  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault()
 
@@ -144,7 +160,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
     <div>
       <h1>Tell us about yourself</h1>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         {/* Name */}
         <div className="form-group">
           <label htmlFor="wizard-form-name">Name</label>
@@ -153,6 +169,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             name={FormFields.Name}
             className="form-control"
             id="wizard-form-name"
+            data-testid="wizard-form-name"
             value={state[FormFields.Name].value}
             onChange={handleChange}
             placeholder="Enter your name"
@@ -173,6 +190,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             name={FormFields.Age}
             className="form-control"
             id="wizard-form-age"
+            data-testid="wizard-form-age"
             value={state[FormFields.Age].value}
             onChange={handleChange}
             placeholder="Enter your age"
@@ -192,6 +210,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             className="form-control"
             name={FormFields.Country}
             id="wizard-form-country"
+            data-testid="wizard-form-country"
             value={state[FormFields.Country].value}
             onChange={handleChange}
           >
@@ -224,10 +243,8 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
                 value={packageName}
                 onChange={handleChange}
                 checked={state[FormFields.Package].value === packageName}
-                disabled={
-                  !state[FormFields.Country].value ||
-                  !state[FormFields.Age].value
-                }
+                disabled={packageSelectionDisabled}
+                data-testid={`wizard-form-package-${packageName}`}
               />
               <label htmlFor={`wizard-form-package-${packageName}`}>
                 {PACKAGES[packageName as Packages].name}
@@ -253,7 +270,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
         <div className="form-group">
           <Button onClick={onBack}>Back</Button>
 
-          <Button onClick={handleSubmit}>Next</Button>
+          <Button type="submit">Next</Button>
         </div>
       </form>
     </div>

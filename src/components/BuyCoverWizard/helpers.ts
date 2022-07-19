@@ -23,13 +23,8 @@ export const validate = (value: string, fieldname: FormFields) => {
         return 'Age is required'
       }
 
-      if (isNaN(Number(value))) {
-        return 'Age must be a number'
-      }
-
-      // I know this isn't a part of the original requirements, but adding it for better test purposes
-      if (Number(value) < 5) {
-        return 'Age must be at least 5'
+      if (isNaN(Number(value)) || Number(value) < 1) {
+        return 'Enter a valid age'
       }
 
       if (value.length > 3) {
@@ -68,7 +63,11 @@ export const getPremium = (state: FormState) => {
   const packageType = state[FormFields.Package].value
   const age = state[FormFields.Age].value
 
-  if (!country || !packageType || !age) {
+  if (
+    validate(country, FormFields.Country) ||
+    validate(packageType, FormFields.Package) ||
+    validate(age, FormFields.Age)
+  ) {
     return ''
   }
 
@@ -90,9 +89,9 @@ export const getAdditionalPremiumPhrase = (
   packageName: Packages
 ) => {
   if (
-    !age ||
-    !countryCode ||
-    !packageName ||
+    validate(countryCode, FormFields.Country) ||
+    validate(packageName, FormFields.Package) ||
+    validate(age, FormFields.Age) ||
     !PACKAGES[packageName].comparativeHike.inDecimals
   ) {
     return ''

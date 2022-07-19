@@ -17,7 +17,12 @@ export enum Packages {
   SuperSafe = 'Super Safe',
 }
 
+export enum FormActionTypes {
+  SET_INPUT = 'SET_INPUT',
+}
+
 export interface FormValue {
+  name?: FormFields
   value: string
   error: string
   isDirty: boolean
@@ -37,10 +42,15 @@ export interface VerificationForm {
   [FormFields.Package]: string
 }
 
-export interface FormAction {
+export interface FormFieldState {
   type: string
   name: FormFields
   value: string
   error?: string
   isDirty?: boolean
+}
+
+export interface FormAction {
+  type: `${FormActionTypes}`
+  payload: Partial<FormState>
 }
