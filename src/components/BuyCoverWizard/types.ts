@@ -5,6 +5,18 @@ export enum FormFields {
   Package = 'package',
 }
 
+export enum CountryCodes {
+  HK = 'HK',
+  US = 'US',
+  AU = 'AU',
+}
+
+export enum Packages {
+  Standard = 'Standard',
+  Safe = 'Safe',
+  SuperSafe = 'Super Safe',
+}
+
 export interface FormValue {
   value: string
   error: string

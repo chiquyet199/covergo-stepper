@@ -1,10 +1,13 @@
 import React, { useReducer } from 'react'
 import Button from 'src/components/Button/Button'
+import { COUNTRY_DETAILS, PACKAGES } from '../constants'
 import {
+  CountryCodes,
   FormAction,
   FormFields,
   FormState,
   FormValue,
+  Packages,
   VerificationForm,
 } from '../types'
 import { validate } from '../validator'
@@ -177,9 +180,11 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             value={state[FormFields.Country].value}
             onChange={handleChange}
           >
-            <option value="HK">Hong kong</option>
-            <option value="US">USA</option>
-            <option value="AU">Australia</option>
+            {Object.keys(COUNTRY_DETAILS).map((country) => (
+              <option key={country} value={country}>
+                {COUNTRY_DETAILS[country as CountryCodes].countryName}
+              </option>
+            ))}
           </select>
 
           {state[FormFields.Country].error &&
@@ -192,41 +197,21 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
 
         {/* Packages */}
         <div className="form-group">
-          <div className="form-package-option">
-            <input
-              type="radio"
-              id="wizard-form-package-standard"
-              name={FormFields.Package}
-              value="1"
-              onChange={handleChange}
-              checked={state[FormFields.Package].value === '1'}
-            />
-            <label htmlFor="wizard-form-package-standard">Standard</label>
-          </div>
-
-          <div className="form-package-option">
-            <input
-              type="radio"
-              id="wizard-form-package-safe"
-              name={FormFields.Package}
-              value="2"
-              onChange={handleChange}
-              checked={state[FormFields.Package].value === '2'}
-            />
-            <label htmlFor="wizard-form-package-safe">Safe</label>
-          </div>
-
-          <div className="form-package-option">
-            <input
-              type="radio"
-              id="wizard-form-package-super-safe"
-              name={FormFields.Package}
-              value="3"
-              onChange={handleChange}
-              checked={state[FormFields.Package].value === '3'}
-            />
-            <label htmlFor="wizard-form-package-super-safe">Super Safe</label>
-          </div>
+          {Object.keys(PACKAGES).map((packageName) => (
+            <div className="form-package-option" key={packageName}>
+              <input
+                type="radio"
+                id={`wizard-form-package-${packageName}`}
+                name={FormFields.Package}
+                value={packageName}
+                onChange={handleChange}
+                checked={state[FormFields.Package].value === packageName}
+              />
+              <label htmlFor={`wizard-form-package-${packageName}`}>
+                {PACKAGES[packageName as Packages].name}
+              </label>
+            </div>
+          ))}
 
           {state[FormFields.Package].error &&
             state[FormFields.Package].isDirty && (
