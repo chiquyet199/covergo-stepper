@@ -1,5 +1,5 @@
-import Card from '../Card/Card'
-import InfoBox from '../InfoBox/InfoBox'
+import Card from '../../Card/Card'
+import InfoBox from '../../InfoBox/InfoBox'
 
 interface WizardPitchProps {
   onClick: () => void
