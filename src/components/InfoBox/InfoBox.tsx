@@ -1,3 +1,5 @@
+import Button from '../Button/Button'
+
 interface InfoBoxProps {
   title: string
   description: string
@@ -18,9 +20,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
     </div>
 
     <div className="info-box-footer">
-      <button className="btn btn-primary" onClick={onClick}>
-        {actionLabel}
-      </button>
+      <Button onClick={onClick}>{actionLabel}</Button>
     </div>
   </div>
 )

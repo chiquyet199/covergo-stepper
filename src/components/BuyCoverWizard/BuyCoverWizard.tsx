@@ -26,7 +26,9 @@ const BuyCoverWizard = () => {
         id: StepperId.Pitch,
       },
       [StepperId.Error]: {
-        component: <WizardError onClick={() => null} />,
+        component: (
+          <WizardError onClick={() => setStepperId(StepperId.Pitch)} />
+        ),
         id: StepperId.Error,
       },
       [StepperId.VerificationForm]: {

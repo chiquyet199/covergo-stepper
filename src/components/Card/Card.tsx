@@ -1,6 +1,4 @@
-import { HTMLAttributes } from 'react'
-
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
 }
 
