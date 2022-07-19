@@ -1,6 +1,6 @@
-import React, { useCallback, useReducer } from 'react'
+import React, { useCallback, useEffect, useReducer } from 'react'
 import Button from 'src/components/Button/Button'
-import { COUNTRY_DETAILS, PACKAGES } from '../constants'
+import { COUNTRY_DETAILS, PACKAGES, WIZARD_FORM_STATE } from '../constants'
 import {
   CountryCodes,
   FormAction,
@@ -48,7 +48,10 @@ const reducer = (state: FormState, action: FormAction) => {
 }
 
 const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
-  const [state, dispatch] = useReducer(reducer, initialFormState)
+  const defaultFormState = localStorage.getItem(WIZARD_FORM_STATE)
+    ? JSON.parse(localStorage.getItem(WIZARD_FORM_STATE) as string)
+    : initialFormState
+  const [state, dispatch] = useReducer(reducer, defaultFormState)
   const premium = getPremium(state)
 
   // Update the respective fields on on change
@@ -131,6 +134,11 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
     },
     [onSubmit, state, updateAndFindAllErrors]
   )
+
+  useEffect(() => {
+    // Save the form state to local storage
+    localStorage.setItem(WIZARD_FORM_STATE, JSON.stringify(state))
+  }, [state])
 
   return (
     <div>
