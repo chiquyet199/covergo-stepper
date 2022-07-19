@@ -72,12 +72,18 @@
   margin-bottom: 1.6rem;
 }
 
+.formGroup .standard {
+  font-size: var(--text-heading-5);
+}
+
 .formGroup .safe {
   color: var(--color-warning);
+  font-size: var(--text-heading-5);
 }
 
 .formGroup .supersafe {
   color: var(--color-success-2);
+  font-size: var(--text-heading-5);
 }
 
 .finalPremium {

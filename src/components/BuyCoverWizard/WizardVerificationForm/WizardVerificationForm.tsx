@@ -223,6 +223,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             </option>
             {Object.keys(COUNTRY_DETAILS).map((country) => (
               <option key={country} value={country}>
+                {COUNTRY_DETAILS[country as CountryCodes].countryFlag}{' '}
                 {COUNTRY_DETAILS[country as CountryCodes].countryName}
               </option>
             ))}

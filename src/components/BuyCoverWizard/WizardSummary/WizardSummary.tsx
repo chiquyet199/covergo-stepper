@@ -39,6 +39,7 @@ const WizardSummary: React.FC<Props> = ({
           </span>
           <span>{verificationForm.country}</span>
         </div>
+
         <div>
           <span>{verificationForm.package}</span>
 

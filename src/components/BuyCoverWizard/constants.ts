@@ -13,18 +13,21 @@ export const COUNTRY_DETAILS = {
   [CountryCodes.HK]: {
     currencyCode: 'HKD',
     countryCode: CountryCodes.HK,
+    countryFlag: '🇭🇰',
     countryName: 'Hong Kong',
     rate: 1,
   },
   [CountryCodes.US]: {
     currencyCode: 'USD',
     countryCode: CountryCodes.US,
+    countryFlag: '🇺🇸',
     countryName: 'United States',
     rate: 2,
   },
   [CountryCodes.AU]: {
     currencyCode: 'AUD',
     countryCode: CountryCodes.AU,
+    countryFlag: '🇦🇺',
     countryName: 'Australia',
     rate: 3,
   },
