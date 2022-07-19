@@ -40,6 +40,7 @@ export interface VerificationForm {
   [FormFields.Age]: string
   [FormFields.Country]: string
   [FormFields.Package]: string
+  premium: string
 }
 
 export interface FormFieldState {

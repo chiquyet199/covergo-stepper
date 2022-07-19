@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 import Button from 'src/components/Button/Button'
+import Container from 'src/components/Container/Container'
+import PageHeader from 'src/components/PageHeader/PageHeader'
 import { VerificationForm } from '../types'
+import styles from './WizardSummary.module.css'
 
 interface Props {
   onBack: () => void
@@ -26,17 +29,26 @@ const WizardSummary: React.FC<Props> = ({
   }
 
   return (
-    <div>
-      <h2>Summary</h2>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod,
-        nisl eget consectetur sagittis, nisl nunc egestas nisi, euismod aliquam
-        nisl nisl eget nisi.
-      </p>
+    <Container align="center" className={styles.container}>
+      <PageHeader title="Summary 😎" />
+
+      <div className={styles.summary}>
+        <div>
+          <span>
+            {verificationForm.name}, {verificationForm.age}
+          </span>
+          <span>{verificationForm.country}</span>
+        </div>
+        <div>
+          <span>{verificationForm.package}</span>
+
+          <span>{verificationForm.premium}</span>
+        </div>
+      </div>
 
       <Button onClick={onBack}>Back</Button>
       <Button onClick={onBuy}>Buy</Button>
-    </div>
+    </Container>
   )
 }
 

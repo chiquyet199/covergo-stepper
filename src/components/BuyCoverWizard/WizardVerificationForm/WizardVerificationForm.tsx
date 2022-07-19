@@ -14,6 +14,7 @@ import {
 import { getAdditionalPremiumPhrase, getPremium, validate } from '../helpers'
 import Container from 'src/components/Container/Container'
 import styles from './WizardVerificationForm.module.css'
+import PageHeader from 'src/components/PageHeader/PageHeader'
 
 interface Props {
   onSubmit: (form: VerificationForm) => void
@@ -146,11 +147,12 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
         [FormFields.Age]: state[FormFields.Age].value,
         [FormFields.Country]: state[FormFields.Country].value,
         [FormFields.Package]: state[FormFields.Package].value,
+        premium,
       }
 
       onSubmit(form)
     },
-    [onSubmit, state, updateAndFindAllErrors]
+    [onSubmit, premium, state, updateAndFindAllErrors]
   )
 
   useEffect(() => {
@@ -160,12 +162,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
 
   return (
     <Container align="center" className={styles.container}>
-      <div className={styles.header}>
-        <span className={styles.segmentLeft} />
-        <h1 className={styles.pageTitle}>Tell us about yourself 🙏</h1>
-        <span className={styles.segmentRight} />
-        <span />
-      </div>
+      <PageHeader title="Tell us about yourself 🙏" />
 
       <form onSubmit={handleSubmit} className={styles.mainForm}>
         {/* Name */}

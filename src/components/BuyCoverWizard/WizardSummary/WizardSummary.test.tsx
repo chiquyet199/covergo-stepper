@@ -12,6 +12,7 @@ describe('WizardSummary suite', () => {
           age: '',
           country: '',
           package: '',
+          premium: '',
         }}
       />
     )
