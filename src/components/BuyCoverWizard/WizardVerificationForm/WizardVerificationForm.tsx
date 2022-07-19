@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useReducer } from 'react'
 import Button from 'src/components/Button/Button'
-import { COUNTRY_DETAILS, PACKAGES, WIZARD_FORM_STATE } from './constants'
+import { COUNTRY_DETAILS, PACKAGES, WIZARD_FORM_STATE } from '../constants'
 import {
   CountryCodes,
   FormAction,
@@ -9,8 +9,8 @@ import {
   FormValue,
   Packages,
   VerificationForm,
-} from './types'
-import { getAdditionalPremiumPhrase, getPremium, validate } from './helpers'
+} from '../types'
+import { getAdditionalPremiumPhrase, getPremium, validate } from '../helpers'
 
 interface Props {
   onSubmit: (form: VerificationForm) => void
