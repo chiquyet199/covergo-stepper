@@ -69,7 +69,7 @@ export const getPremium = (state: FormState) => {
   const age = state[FormFields.Age].value
 
   if (!country || !packageType || !age) {
-    return 0
+    return ''
   }
 
   const ageInNumber = parseInt(age, 10)
@@ -78,8 +78,33 @@ export const getPremium = (state: FormState) => {
   const basePremium = ageInNumber * 10 * countryRate
 
   // final premium is base premium + package comparative hikes in percentage
-  return (
+  return `${
     basePremium +
     basePremium * PACKAGES[packageType as Packages].comparativeHike.inDecimals
-  )
+  }${COUNTRY_DETAILS[country as CountryCodes].currencyCode}`
+}
+
+export const getAdditionalPremiumPhrase = (
+  age: string,
+  countryCode: CountryCodes,
+  packageName: Packages
+) => {
+  if (
+    !age ||
+    !countryCode ||
+    !packageName ||
+    !PACKAGES[packageName].comparativeHike.inDecimals
+  ) {
+    return ''
+  }
+
+  const ageInNumber = parseInt(age, 10)
+  const countryRate = COUNTRY_DETAILS[countryCode].rate
+
+  const basePremium = ageInNumber * 10 * countryRate
+
+  // final premium is base premium + package comparative hikes in percentage
+  return `(+${basePremium * PACKAGES[packageName].comparativeHike.inDecimals}${
+    COUNTRY_DETAILS[countryCode].currencyCode
+  }, ${PACKAGES[packageName].comparativeHike.inPercentage}%)`
 }

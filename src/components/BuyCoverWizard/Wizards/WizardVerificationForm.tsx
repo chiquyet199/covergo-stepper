@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useCallback, useReducer } from 'react'
 import Button from 'src/components/Button/Button'
 import { COUNTRY_DETAILS, PACKAGES } from '../constants'
 import {
@@ -10,7 +10,7 @@ import {
   Packages,
   VerificationForm,
 } from '../types'
-import { getPremium, validate } from '../helpers'
+import { getAdditionalPremiumPhrase, getPremium, validate } from '../helpers'
 
 interface Props {
   onSubmit: (form: VerificationForm) => void
@@ -52,23 +52,26 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
   const premium = getPremium(state)
 
   // Update the respective fields on on change
-  const handleChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target
+  const handleChange = useCallback(
+    (
+      e:
+        | React.ChangeEvent<HTMLInputElement>
+        | React.ChangeEvent<HTMLSelectElement>
+    ) => {
+      const { name, value } = e.target
 
-    // Dispatch is responsible for updating the right field
-    dispatch({
-      type: 'GET_INPUT',
-      name: name as FormFields,
-      value,
-      error: validate(value, name as FormFields),
-    })
-  }
+      // Dispatch is responsible for updating the right field
+      dispatch({
+        type: 'GET_INPUT',
+        name: name as FormFields,
+        value,
+        error: validate(value, name as FormFields),
+      })
+    },
+    []
+  )
 
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target
 
     dispatch({
@@ -78,10 +81,10 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
       error: validate(value, name as FormFields),
       isDirty: true,
     })
-  }
+  }, [])
 
   // Check if the form has any errors
-  const updateAndFindAllErrors = () => {
+  const updateAndFindAllErrors = useCallback(() => {
     const errors: Record<FormFields, string> = {} as Record<FormFields, string>
 
     Object.keys(state).forEach((field) => {
@@ -103,28 +106,31 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
     })
 
     return errors
-  }
+  }, [state])
 
   // Submit the form
-  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault()
+  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = useCallback(
+    (e) => {
+      e.preventDefault()
 
-    const errors = updateAndFindAllErrors()
+      const errors = updateAndFindAllErrors()
 
-    // Do not submit if there are errors
-    if (Object.keys(errors).length) {
-      return
-    }
+      // Do not submit if there are errors
+      if (Object.keys(errors).length) {
+        return
+      }
 
-    const form: VerificationForm = {
-      [FormFields.Name]: state[FormFields.Name].value,
-      [FormFields.Age]: state[FormFields.Age].value,
-      [FormFields.Country]: state[FormFields.Country].value,
-      [FormFields.Package]: state[FormFields.Package].value,
-    }
+      const form: VerificationForm = {
+        [FormFields.Name]: state[FormFields.Name].value,
+        [FormFields.Age]: state[FormFields.Age].value,
+        [FormFields.Country]: state[FormFields.Country].value,
+        [FormFields.Package]: state[FormFields.Package].value,
+      }
 
-    onSubmit(form)
-  }
+      onSubmit(form)
+    },
+    [onSubmit, state, updateAndFindAllErrors]
+  )
 
   return (
     <div>
@@ -210,9 +216,18 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
                 value={packageName}
                 onChange={handleChange}
                 checked={state[FormFields.Package].value === packageName}
+                disabled={
+                  !state[FormFields.Country].value ||
+                  !state[FormFields.Age].value
+                }
               />
               <label htmlFor={`wizard-form-package-${packageName}`}>
                 {PACKAGES[packageName as Packages].name}
+                {getAdditionalPremiumPhrase(
+                  state[FormFields.Age].value,
+                  state[FormFields.Country].value as CountryCodes,
+                  packageName as Packages
+                )}
               </label>
             </div>
           ))}
@@ -225,10 +240,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             )}
         </div>
 
-        <p>
-          Your premium is: {premium}
-          {state[FormFields.Country].value}
-        </p>
+        {!!premium && <p>Your premium is: {premium}</p>}
 
         <div className="form-group">
           <Button onClick={onBack}>Back</Button>
