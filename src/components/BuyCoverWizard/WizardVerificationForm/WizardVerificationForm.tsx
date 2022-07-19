@@ -98,13 +98,13 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
   }, [])
 
   // Check if the form has any errors
-  const updateAndFindAllErrors = useCallback(() => {
+  const updateAndFindAllErrors = useCallback((finalFormState: FormState) => {
     const errors = {} as Record<FormFields, string>
     const payload = {} as Record<FormFields, FormValue>
 
-    Object.keys(state).forEach((field) => {
+    Object.keys(finalFormState).forEach((field) => {
       const formField = field as FormFields
-      const value = state[formField].value
+      const value = finalFormState[formField].value
       const error = validate(value, formField)
 
       if (error) {
@@ -125,14 +125,14 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
     })
 
     return errors
-  }, [state])
+  }, [])
 
   // Submit the form
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault()
 
-      const errors = updateAndFindAllErrors()
+      const errors = updateAndFindAllErrors(state)
 
       // Do not submit if there are errors
       if (Object.keys(errors).length) {

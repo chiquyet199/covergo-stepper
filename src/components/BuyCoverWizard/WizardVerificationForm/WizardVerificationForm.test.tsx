@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import WizardVerificationForm from './WizardVerificationForm'
 
 describe('Wizard VerificationForm suite', () => {
@@ -31,7 +31,7 @@ describe('Wizard VerificationForm suite', () => {
     expect(onBack).toHaveBeenCalled()
   })
 
-  test('calls onSubmit when the submit button is clicked', async () => {
+  test('calls onSubmit when the submit button is clicked', () => {
     const onSubmit = jest.fn()
 
     render(<WizardVerificationForm onBack={() => null} onSubmit={onSubmit} />)
@@ -58,8 +58,6 @@ describe('Wizard VerificationForm suite', () => {
 
     fireEvent.click(screen.getByText('Next'))
 
-    await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalled()
-    })
+    expect(onSubmit).toHaveBeenCalled()
   })
 })
