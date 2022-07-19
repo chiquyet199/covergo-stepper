@@ -2,7 +2,8 @@ import { useEffect } from 'react'
 import Button from 'src/components/Button/Button'
 import Container from 'src/components/Container/Container'
 import PageHeader from 'src/components/PageHeader/PageHeader'
-import { VerificationForm } from '../types'
+import { COUNTRY_DETAILS } from '../constants'
+import { CountryCodes, VerificationForm } from '../types'
 import styles from './WizardSummary.module.css'
 
 interface Props {
@@ -28,27 +29,35 @@ const WizardSummary: React.FC<Props> = ({
     return null
   }
 
+  const countryFlag = (verificationForm.country as CountryCodes)
+    ? COUNTRY_DETAILS[verificationForm.country as CountryCodes].countryFlag
+    : ''
+
   return (
     <Container align="center" className={styles.container}>
       <PageHeader title="Summary 😎" />
 
-      <div className={styles.summary}>
-        <div>
-          <span>
-            {verificationForm.name}, {verificationForm.age}
-          </span>
-          <span>{verificationForm.country}</span>
-        </div>
+      <span className={styles.title}>
+        {countryFlag} {verificationForm.name}, {verificationForm.age}
+      </span>
 
-        <div>
-          <span>{verificationForm.package}</span>
-
-          <span>{verificationForm.premium}</span>
-        </div>
+      <div
+        className={`${
+          styles[verificationForm.package.replace(' ', '').toLowerCase()]
+        } ${styles.package}`}
+      >
+        <span>{verificationForm.package}</span>
+        <span>{verificationForm.premium}</span>
       </div>
 
-      <Button onClick={onBack}>Back</Button>
-      <Button onClick={onBuy}>Buy</Button>
+      <div className={styles.formActionGroup}>
+        <Button onClick={onBack} appearance="ghost">
+          Back
+        </Button>
+        <Button onClick={onBuy} appearance="contained">
+          Buy
+        </Button>
+      </div>
     </Container>
   )
 }

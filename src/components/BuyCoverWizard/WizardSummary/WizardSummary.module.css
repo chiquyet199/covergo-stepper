@@ -3,3 +3,38 @@
   max-width: 38rem;
   margin: 0 auto;
 }
+
+/* Summary */
+.title {
+  font-size: var(--text-heading-2);
+  font-weight: var(--text-medium);
+  margin-bottom: 1.5rem;
+  display: flex;
+}
+
+.package {
+  margin-bottom: 5rem;
+  font-size: var(--text-heading-5);
+  font-weight: var(--text-medium);
+}
+
+.package span:first-child {
+  margin-right: 1rem;
+  text-transform: uppercase;
+}
+
+.safe {
+  color: var(--color-warning);
+}
+
+.supersafe {
+  color: var(--color-success-2);
+}
+
+.formActionGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 2rem;
+}
