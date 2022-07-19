@@ -1,5 +1,7 @@
 import { CountryCodes, Packages } from './types'
 
+export const WIZARD_STEPPER_ID = 'buy-cover-wizard-stepper-id'
+
 export const COUNTRY_DETAILS = {
   [CountryCodes.HK]: {
     currencyCode: 'HKD',

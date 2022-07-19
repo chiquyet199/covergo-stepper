@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { WIZARD_STEPPER_ID } from './constants'
 import {
   WizardError,
   WizardPitch,
@@ -14,7 +15,11 @@ enum StepperId {
 }
 
 const BuyCoverWizard = () => {
-  const [stepperId, setStepperId] = useState<StepperId>(StepperId.Pitch)
+  // We can check if browser supports localStorage or not but for now we'll just use localStorage
+  const savedStepperId = localStorage.getItem(WIZARD_STEPPER_ID) as StepperId
+  const [stepperId, setStepperId] = useState<StepperId>(
+    savedStepperId || StepperId.Pitch
+  )
   const gotoPitch = () => setStepperId(StepperId.Pitch)
   const gotoVerificationForm = () => setStepperId(StepperId.VerificationForm)
   const onSubmit = () => {
@@ -46,6 +51,15 @@ const BuyCoverWizard = () => {
     }),
     []
   )
+
+  // Update the stepperId in localStorage so that we can remember the last step
+  useEffect(() => {
+    if (stepperId !== StepperId.Error) {
+      localStorage.setItem(WIZARD_STEPPER_ID, stepperId)
+    } else {
+      localStorage.removeItem(WIZARD_STEPPER_ID)
+    }
+  }, [stepperId])
 
   return <div>{WIZARDS[stepperId].component}</div>
 }
