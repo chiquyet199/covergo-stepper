@@ -1,5 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
-import { WIZARD_STEPPER_ID } from './constants'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  WIZARD_FORM_DETAILS,
+  WIZARD_FORM_STATE,
+  WIZARD_STEPPER_ID,
+} from './constants'
+import { VerificationForm } from './types'
 import {
   WizardError,
   WizardPitch,
@@ -15,17 +20,38 @@ enum StepperId {
 }
 
 const BuyCoverWizard = () => {
-  // We can check if browser supports localStorage or not but for now we'll just use localStorage
-  const savedStepperId = localStorage.getItem(WIZARD_STEPPER_ID) as StepperId
   const [stepperId, setStepperId] = useState<StepperId>(
-    savedStepperId || StepperId.Pitch
+    (localStorage.getItem(WIZARD_STEPPER_ID) as StepperId) || StepperId.Pitch
   )
+
+  // This data will be viewable on the summary page
+  const [verificationForm, setVerificationForm] =
+    useState<VerificationForm | null>(
+      localStorage.getItem(WIZARD_FORM_DETAILS)
+        ? JSON.parse(localStorage.getItem(WIZARD_FORM_DETAILS) as string)
+        : null
+    )
+
+  // Step naviagational methods
   const gotoPitch = () => setStepperId(StepperId.Pitch)
   const gotoVerificationForm = () => setStepperId(StepperId.VerificationForm)
-  const onSubmit = () => {
+
+  // Handler for the verification form available on step 2/verification form
+  const onSubmit = (data: VerificationForm) => {
+    // Save the form details in localStorage to be viewed later on summary page
+    localStorage.setItem(WIZARD_FORM_DETAILS, JSON.stringify(data))
+    setVerificationForm(data)
     setStepperId(StepperId.Summary)
   }
 
+  // Handler for the buy button on Summary page
+  const onBuy = useCallback(() => {
+    setVerificationForm(null)
+    localStorage.removeItem(WIZARD_FORM_STATE)
+    gotoPitch()
+  }, [])
+
+  // Wizard steps
   const WIZARDS = useMemo(
     () => ({
       [StepperId.Pitch]: {
@@ -44,12 +70,16 @@ const BuyCoverWizard = () => {
       },
       [StepperId.Summary]: {
         component: (
-          <WizardSummary onBack={gotoVerificationForm} onBuy={gotoPitch} />
+          <WizardSummary
+            onBack={gotoVerificationForm}
+            onBuy={onBuy}
+            verificationForm={verificationForm}
+          />
         ),
         id: StepperId.Summary,
       },
     }),
-    []
+    [onBuy, verificationForm]
   )
 
   // Update the stepperId in localStorage so that we can remember the last step
