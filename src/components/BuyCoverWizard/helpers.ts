@@ -49,7 +49,7 @@ export const validate = (value: string, fieldname: FormFields) => {
 
     case FormFields.Package:
       if (!value.length) {
-        return 'Package is required'
+        return 'Package is required and remains disabled if you do not select a country and a valid age'
       }
 
       return ''
