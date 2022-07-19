@@ -61,6 +61,9 @@ I have prepared a architectural diagram for the project here:
 
 The above diagram should provide a high level overview of the project.
 
+[Assignment Demo](./covergo-assignment.mov)
+[Code Walkthrough](./code-walkthrough.mp4)
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## The Approach
