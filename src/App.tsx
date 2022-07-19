@@ -12,6 +12,7 @@ import {
   WizardVerificationForm,
 } from 'src/components/BuyCoverWizard'
 import Container from './components/Container/Container'
+import { Spinner } from './components'
 
 enum StepperId {
   Pitch = 'pitch',
@@ -20,10 +21,17 @@ enum StepperId {
   Summary = 'summary',
 }
 
+const loaderStyle = {
+  justifyContent: 'center',
+  display: 'flex',
+  alignItems: 'center',
+}
+
 const App = () => {
   const [stepperId, setStepperId] = useState<StepperId>(
     (localStorage.getItem(WIZARD_STEPPER_ID) as StepperId) || StepperId.Pitch
   )
+  const [loading, setLoading] = useState(true)
 
   // This data will be viewable on the summary page
   const [verificationForm, setVerificationForm] =
@@ -91,6 +99,19 @@ const App = () => {
       localStorage.removeItem(WIZARD_STEPPER_ID)
     }
   }, [stepperId])
+
+  // App ready state
+  useEffect(() => {
+    setLoading(false)
+  }, [])
+
+  if (loading) {
+    return (
+      <Container style={loaderStyle}>
+        <Spinner />
+      </Container>
+    )
+  }
 
   return <Container>{WIZARDS[stepperId].component}</Container>
 }
