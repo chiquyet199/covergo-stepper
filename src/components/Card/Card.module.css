@@ -1,9 +1,9 @@
 .cardContainer {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 95%;
   max-width: 50rem;
-  min-width: 32rem;
+  min-width: 28rem;
   background-color: var(--color-background-2);
   border-radius: 10px;
   box-shadow: 0px 0px 10px var(--color-transparent-1);

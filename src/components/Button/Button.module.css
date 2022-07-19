@@ -1,0 +1,26 @@
+.button {
+  border: none;
+  color: white;
+  padding: 1.6rem 3.2rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: var(--text-body-1);
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-radius: 1rem;
+}
+
+.appearance-contained {
+  background-color: var(--color-primary);
+}
+
+.appearance-outlined {
+  background-color: transparent;
+  border: 1px solid var(--color-primary);
+}
+
+.appearance-ghost {
+  background-color: transparent;
+  border: none;
+}

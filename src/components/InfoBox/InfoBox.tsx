@@ -15,7 +15,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
 }) => (
   <div className={styles.container}>
     <h3 className={styles.title}>{title}</h3>
-    <p>{description}</p>
+    <p className={styles.description}>{description}</p>
 
     <Button onClick={onClick}>{actionLabel}</Button>
   </div>
