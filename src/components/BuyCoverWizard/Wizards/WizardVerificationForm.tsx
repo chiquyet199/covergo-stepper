@@ -10,7 +10,7 @@ import {
   Packages,
   VerificationForm,
 } from '../types'
-import { validate } from '../validator'
+import { getPremium, validate } from '../helpers'
 
 interface Props {
   onSubmit: (form: VerificationForm) => void
@@ -49,6 +49,7 @@ const reducer = (state: FormState, action: FormAction) => {
 
 const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
   const [state, dispatch] = useReducer(reducer, initialFormState)
+  const premium = getPremium(state)
 
   // Update the respective fields on on change
   const handleChange = (
@@ -180,6 +181,9 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             value={state[FormFields.Country].value}
             onChange={handleChange}
           >
+            <option value="" disabled hidden>
+              Choose your country
+            </option>
             {Object.keys(COUNTRY_DETAILS).map((country) => (
               <option key={country} value={country}>
                 {COUNTRY_DETAILS[country as CountryCodes].countryName}
@@ -221,7 +225,10 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             )}
         </div>
 
-        <p>Your premium is: 500HKD</p>
+        <p>
+          Your premium is: {premium}
+          {state[FormFields.Country].value}
+        </p>
 
         <div className="form-group">
           <Button onClick={onBack}>Back</Button>

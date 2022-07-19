@@ -24,16 +24,22 @@ export const COUNTRY_DETAILS = {
 export const PACKAGES = {
   [Packages.Standard]: {
     name: Packages.Standard,
+    comparativeHike: {
+      inDecimals: 0,
+      inPercentage: 0,
+    },
   },
   [Packages.Safe]: {
     name: Packages.Safe,
-    comparativeRise: {
+    comparativeHike: {
+      inDecimals: 0.5,
       inPercentage: 50,
     },
   },
   [Packages.SuperSafe]: {
     name: Packages.SuperSafe,
-    comparativeRise: {
+    comparativeHike: {
+      inDecimals: 0.75,
       inPercentage: 75,
     },
   },

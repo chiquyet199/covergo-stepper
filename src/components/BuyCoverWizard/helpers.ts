@@ -1,4 +1,5 @@
-import { FormFields } from './types'
+import { COUNTRY_DETAILS, PACKAGES } from './constants'
+import { CountryCodes, FormFields, FormState, Packages } from './types'
 
 // Validate the form fields
 export const validate = (value: string, fieldname: FormFields) => {
@@ -27,8 +28,8 @@ export const validate = (value: string, fieldname: FormFields) => {
       }
 
       // I know this isn't a part of the original requirements, but adding it for better test purposes
-      if (Number(value) < 18) {
-        return 'Age must be at least 18'
+      if (Number(value) < 5) {
+        return 'Age must be at least 5'
       }
 
       if (value.length > 3) {
@@ -60,4 +61,25 @@ export const validate = (value: string, fieldname: FormFields) => {
     default:
       return ''
   }
+}
+
+export const getPremium = (state: FormState) => {
+  const country = state[FormFields.Country].value
+  const packageType = state[FormFields.Package].value
+  const age = state[FormFields.Age].value
+
+  if (!country || !packageType || !age) {
+    return 0
+  }
+
+  const ageInNumber = parseInt(age, 10)
+  const countryRate = COUNTRY_DETAILS[country as CountryCodes].rate
+
+  const basePremium = ageInNumber * 10 * countryRate
+
+  // final premium is base premium + package comparative hikes in percentage
+  return (
+    basePremium +
+    basePremium * PACKAGES[packageType as Packages].comparativeHike.inDecimals
+  )
 }
