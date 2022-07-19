@@ -10,7 +10,7 @@ describe('WizardPitch suite', () => {
   test('renders with the correct text', () => {
     render(<WizardPitch onClick={() => null} />)
 
-    expect(screen.getByText('Hello There!')).toBeTruthy()
+    expect(screen.getByText('Hello There! 😁')).toBeTruthy()
     expect(
       screen.getByText(
         "Let's buy some insurance. It is going to take only a few steps"

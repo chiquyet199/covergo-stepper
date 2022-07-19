@@ -1,5 +1,5 @@
 import Button from '../Button/Button'
-
+import styles from './InfoBox.module.css'
 interface InfoBoxProps {
   title: string
   description: string
@@ -13,15 +13,11 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   actionLabel,
   onClick,
 }) => (
-  <div className="info-box">
-    <div className="info-box-header">
-      <h3>{title}</h3>
-      <p>{description}</p>
-    </div>
+  <div className={styles.container}>
+    <h3 className={styles.title}>{title}</h3>
+    <p>{description}</p>
 
-    <div className="info-box-footer">
-      <Button onClick={onClick}>{actionLabel}</Button>
-    </div>
+    <Button onClick={onClick}>{actionLabel}</Button>
   </div>
 )
 

@@ -1,3 +1,4 @@
+import Container from 'src/components/Container/Container'
 import Card from '../../Card/Card'
 import InfoBox from '../../InfoBox/InfoBox'
 
@@ -7,14 +8,16 @@ interface WizardPitchProps {
 
 const WizardPitch: React.FC<WizardPitchProps> = ({ onClick }) => {
   return (
-    <Card>
-      <InfoBox
-        title="Hello There!"
-        description="Let's buy some insurance. It is going to take only a few steps"
-        actionLabel="Start"
-        onClick={onClick}
-      />
-    </Card>
+    <Container align="center">
+      <Card>
+        <InfoBox
+          title="Hello There! 😁"
+          description="Let's buy some insurance. It is going to take only a few steps"
+          actionLabel="Start"
+          onClick={onClick}
+        />
+      </Card>
+    </Container>
   )
 }
 
