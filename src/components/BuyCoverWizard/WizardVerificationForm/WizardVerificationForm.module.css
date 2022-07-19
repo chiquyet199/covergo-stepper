@@ -1,3 +1,10 @@
+.container {
+  width: 100%;
+  max-width: 38rem;
+  margin: 0 auto;
+}
+
+/* Form Header */
 .header {
   display: flex;
   align-items: center;
@@ -37,4 +44,70 @@
   right: 0;
   bottom: -0.3rem;
   border-bottom-right-radius: 0.5rem;
+}
+
+/* Form */
+.mainForm {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.formGroup label {
+  font-size: var(--text-heading-4);
+  font-weight: var(--text-medium);
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.formGroup .formInput,
+.formGroup select {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 0.5rem;
+  font-size: var(--text-body-1);
+  font-weight: var(--text-medium);
+  color: var(--color-text-2);
+  letter-spacing: 1px;
+  outline: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.formGroup select {
+  color: var(--color-text-2);
+}
+
+.formGroup .formInput:focus,
+.formGroup .formInput:hover,
+.formGroup select:focus,
+.formGroup select:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-text-1);
+}
+
+.formGroup .formInput:focus::placeholder,
+.formGroup .formInput:hover::placeholder,
+.formGroup select:focus::placeholder,
+.formGroup select:hover::placeholder {
+  color: var(--color-text-primary);
+}
+
+.formActionGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 2rem;
+  width: 80%;
 }

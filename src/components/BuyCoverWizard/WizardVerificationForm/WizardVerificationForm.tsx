@@ -159,7 +159,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
   }, [state])
 
   return (
-    <Container align="center">
+    <Container align="center" className={styles.container}>
       <div className={styles.header}>
         <span className={styles.segmentLeft} />
         <h1 className={styles.pageTitle}>Tell us about yourself 🙏</h1>
@@ -167,14 +167,14 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
         <span />
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.mainForm}>
         {/* Name */}
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="wizard-form-name">Name</label>
           <input
             type="text"
             name={FormFields.Name}
-            className="form-control"
+            className={styles.formInput}
             id="wizard-form-name"
             data-testid="wizard-form-name"
             value={state[FormFields.Name].value}
@@ -190,12 +190,12 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
         </div>
 
         {/* Age */}
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="wizard-form-age">Age</label>
           <input
             type="number"
             name={FormFields.Age}
-            className="form-control"
+            className={styles.formInput}
             id="wizard-form-age"
             data-testid="wizard-form-age"
             value={state[FormFields.Age].value}
@@ -211,7 +211,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
         </div>
 
         {/* Country */}
-        <div className="form-group">
+        <div className={styles.formGroup}>
           <label htmlFor="wizard-form-country">Country</label>
           <select
             className="form-control"
@@ -240,7 +240,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
         </div>
 
         {/* Packages */}
-        <div className="form-group">
+        <div className={styles.formGroup}>
           {Object.keys(PACKAGES).map((packageName) => (
             <div className="form-package-option" key={packageName}>
               <input
@@ -274,7 +274,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
 
         {!!premium && <p>Your premium is: {premium}</p>}
 
-        <div className="form-group">
+        <div className={styles.formActionGroup}>
           <Button appearance="outlined" onClick={onBack}>
             Back
           </Button>

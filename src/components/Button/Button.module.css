@@ -9,15 +9,24 @@
   letter-spacing: 1px;
   cursor: pointer;
   border-radius: 1rem;
+  transition: all 0.3s ease-in-out;
 }
 
 .appearance-contained {
   background-color: var(--color-primary);
 }
 
+.appearance-contained:hover {
+  background-color: var(--color-secondary);
+}
+
 .appearance-outlined {
   background-color: transparent;
   border: 1px solid var(--color-primary);
+}
+
+.appearance-outlined:hover {
+  border: 1px solid var(--color-secondary);
 }
 
 .appearance-ghost {
