@@ -11,6 +11,7 @@ import {
   WizardSummary,
   WizardVerificationForm,
 } from 'src/components/BuyCoverWizard'
+import Container from './components/Container/Container'
 
 enum StepperId {
   Pitch = 'pitch',
@@ -91,7 +92,7 @@ const App = () => {
     }
   }, [stepperId])
 
-  return <div>{WIZARDS[stepperId].component}</div>
+  return <Container>{WIZARDS[stepperId].component}</Container>
 }
 
 export default App
