@@ -3,14 +3,14 @@ import {
   WIZARD_FORM_DETAILS,
   WIZARD_FORM_STATE,
   WIZARD_STEPPER_ID,
-} from './constants'
-import { VerificationForm } from './types'
+} from 'src/components/BuyCoverWizard/constants'
+import { VerificationForm } from 'src/components/BuyCoverWizard/types'
 import {
   WizardError,
   WizardPitch,
   WizardSummary,
   WizardVerificationForm,
-} from './Wizards'
+} from 'src/components/BuyCoverWizard'
 
 enum StepperId {
   Pitch = 'pitch',
@@ -19,7 +19,7 @@ enum StepperId {
   Summary = 'summary',
 }
 
-const BuyCoverWizard = () => {
+const App = () => {
   const [stepperId, setStepperId] = useState<StepperId>(
     (localStorage.getItem(WIZARD_STEPPER_ID) as StepperId) || StepperId.Pitch
   )
@@ -94,4 +94,4 @@ const BuyCoverWizard = () => {
   return <div>{WIZARDS[stepperId].component}</div>
 }
 
-export default BuyCoverWizard
+export default App

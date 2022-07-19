@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import Button from 'src/components/Button/Button'
-import { VerificationForm } from '../types'
+import { VerificationForm } from './types'
 
 interface Props {
   onBack: () => void
