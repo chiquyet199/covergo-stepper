@@ -15,28 +15,32 @@ enum StepperId {
 
 const BuyCoverWizard = () => {
   const [stepperId, setStepperId] = useState<StepperId>(StepperId.Pitch)
+  const gotoPitch = () => setStepperId(StepperId.Pitch)
+  const gotoVerificationForm = () => setStepperId(StepperId.VerificationForm)
+  const onSubmit = () => {
+    setStepperId(StepperId.Summary)
+  }
+
   const WIZARDS = useMemo(
     () => ({
       [StepperId.Pitch]: {
-        component: (
-          <WizardPitch
-            onClick={() => setStepperId(StepperId.VerificationForm)}
-          />
-        ),
+        component: <WizardPitch onClick={gotoVerificationForm} />,
         id: StepperId.Pitch,
       },
       [StepperId.Error]: {
-        component: (
-          <WizardError onClick={() => setStepperId(StepperId.Pitch)} />
-        ),
+        component: <WizardError onClick={gotoPitch} />,
         id: StepperId.Error,
       },
       [StepperId.VerificationForm]: {
-        component: <WizardVerificationForm />,
+        component: (
+          <WizardVerificationForm onBack={gotoPitch} onSubmit={onSubmit} />
+        ),
         id: StepperId.VerificationForm,
       },
       [StepperId.Summary]: {
-        component: <WizardSummary />,
+        component: (
+          <WizardSummary onBack={gotoVerificationForm} onBuy={gotoPitch} />
+        ),
         id: StepperId.Summary,
       },
     }),

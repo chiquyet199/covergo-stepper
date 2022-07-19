@@ -1,4 +1,11 @@
-const WizardSummary = () => {
+import Button from 'src/components/Button/Button'
+
+interface Props {
+  onBack: () => void
+  onBuy: () => void
+}
+
+const WizardSummary: React.FC<Props> = ({ onBack, onBuy }) => {
   return (
     <div>
       <h2>Summary</h2>
@@ -7,6 +14,9 @@ const WizardSummary = () => {
         nisl eget consectetur sagittis, nisl nunc egestas nisi, euismod aliquam
         nisl nisl eget nisi.
       </p>
+
+      <Button onClick={onBack}>Back</Button>
+      <Button onClick={onBuy}>Buy</Button>
     </div>
   )
 }
