@@ -47,10 +47,17 @@ const App = () => {
 
   // Handler for the verification form available on step 2/verification form
   const onSubmit = (data: VerificationForm) => {
-    // Save the form details in localStorage to be viewed later on summary page
-    localStorage.setItem(WIZARD_FORM_DETAILS, JSON.stringify(data))
-    setVerificationForm(data)
-    setStepperId(StepperId.Summary)
+    if (Number(data.age) > 100) {
+      // Clear all data if the age is greater than 100
+      setVerificationForm(null)
+      localStorage.removeItem(WIZARD_FORM_STATE)
+      setStepperId(StepperId.Error)
+    } else {
+      // Save the form details in localStorage to be viewed later on summary page
+      localStorage.setItem(WIZARD_FORM_DETAILS, JSON.stringify(data))
+      setVerificationForm(data)
+      setStepperId(StepperId.Summary)
+    }
   }
 
   // Handler for the buy button on Summary page

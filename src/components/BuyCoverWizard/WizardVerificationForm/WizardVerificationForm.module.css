@@ -100,7 +100,37 @@
 .formGroup .formInput:hover::placeholder,
 .formGroup select:focus::placeholder,
 .formGroup select:hover::placeholder {
-  color: var(--color-text-primary);
+  color: var(--color-text-1);
+}
+
+.formTextDanger {
+  font-size: var(--text-body-1);
+  font-weight: var(--text-medium);
+  color: var(--color-danger);
+  margin-top: 0.5rem;
+}
+
+.formInputRadio {
+  margin-bottom: 1.6rem;
+}
+
+.formGroup .safe {
+  color: var(--color-warning);
+}
+
+.formGroup .supersafe {
+  color: var(--color-success-2);
+}
+
+.finalPremium {
+  font-size: var(--text-heading-4);
+  font-weight: var(--text-medium);
+  color: var(--color-text-1);
+  margin-bottom: 2rem;
+}
+
+.premium {
+  color: var(--color-success-1);
 }
 
 .formActionGroup {

@@ -11,9 +11,9 @@ const WizardError: React.FC<WizardErrorProps> = ({ onClick }) => {
     <Container align="center">
       <Card>
         <InfoBox
-          title="Ooops!"
+          title="Ooops! 😢"
           description="Your age is over our accepted limit. We are sorry but we cannot insure you now."
-          actionLabel="Ok :("
+          actionLabel="Ok"
           onClick={onClick}
         />
       </Card>

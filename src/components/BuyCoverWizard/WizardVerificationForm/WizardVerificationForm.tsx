@@ -183,7 +183,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             onBlur={handleBlur}
           />
           {state[FormFields.Name].error && state[FormFields.Name].isDirty && (
-            <small className="form-text text-danger">
+            <small className={styles.formTextDanger}>
               {state[FormFields.Name].error}
             </small>
           )}
@@ -204,7 +204,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             onBlur={handleBlur}
           />
           {state[FormFields.Age].error && state[FormFields.Age].isDirty && (
-            <small className="form-text text-danger">
+            <small className={styles.formTextDanger}>
               {state[FormFields.Age].error}
             </small>
           )}
@@ -233,7 +233,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
 
           {state[FormFields.Country].error &&
             state[FormFields.Country].isDirty && (
-              <small className="form-text text-danger">
+              <small className={styles.formTextDanger}>
                 {state[FormFields.Country].error}
               </small>
             )}
@@ -242,7 +242,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
         {/* Packages */}
         <div className={styles.formGroup}>
           {Object.keys(PACKAGES).map((packageName) => (
-            <div className="form-package-option" key={packageName}>
+            <div className={styles.formInputRadio} key={packageName}>
               <input
                 type="radio"
                 id={`wizard-form-package-${packageName}`}
@@ -253,7 +253,10 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
                 disabled={packageSelectionDisabled}
                 data-testid={`wizard-form-package-${packageName}`}
               />
-              <label htmlFor={`wizard-form-package-${packageName}`}>
+              <label
+                htmlFor={`wizard-form-package-${packageName}`}
+                className={styles[packageName.replace(' ', '').toLowerCase()]}
+              >
                 {PACKAGES[packageName as Packages].name}
                 {getAdditionalPremiumPhrase(
                   state[FormFields.Age].value,
@@ -266,13 +269,17 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
 
           {state[FormFields.Package].error &&
             state[FormFields.Package].isDirty && (
-              <small className="form-text text-danger">
+              <small className={styles.formTextDanger}>
                 {state[FormFields.Package].error}
               </small>
             )}
         </div>
 
-        {!!premium && <p>Your premium is: {premium}</p>}
+        {!!premium && (
+          <p className={styles.finalPremium}>
+            Your premium is: <span className={styles.premium}>{premium}</span>
+          </p>
+        )}
 
         <div className={styles.formActionGroup}>
           <Button appearance="outlined" onClick={onBack}>
