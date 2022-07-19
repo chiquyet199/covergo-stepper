@@ -1,37 +1,13 @@
 import React, { useReducer } from 'react'
 import Button from 'src/components/Button/Button'
-
-enum FormFields {
-  Name = 'name',
-  Age = 'age',
-  Country = 'country',
-  Package = 'package',
-}
-
-interface FormValue {
-  value: string
-  error: string
-}
-
-interface FormState {
-  [FormFields.Name]: FormValue
-  [FormFields.Age]: FormValue
-  [FormFields.Country]: FormValue
-  [FormFields.Package]: FormValue
-}
-interface VerificationForm {
-  [FormFields.Name]: string
-  [FormFields.Age]: string
-  [FormFields.Country]: string
-  [FormFields.Package]: string
-}
-
-interface FormAction {
-  type: string
-  name: FormFields
-  value: string
-  error?: string
-}
+import {
+  FormAction,
+  FormFields,
+  FormState,
+  FormValue,
+  VerificationForm,
+} from '../types'
+import { validate } from '../validator'
 
 interface Props {
   onSubmit: (form: VerificationForm) => void
@@ -41,6 +17,7 @@ interface Props {
 const EMPTY_FORM_VALUE: FormValue = {
   value: '',
   error: '',
+  isDirty: false,
 }
 
 const initialFormState: FormState = {
@@ -59,6 +36,7 @@ const reducer = (state: FormState, action: FormAction) => {
           ...state[action.name],
           value: action.value,
           error: action.error || '',
+          isDirty: action.isDirty || false,
         },
       }
     default:
@@ -82,11 +60,58 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
       type: 'GET_INPUT',
       name: name as FormFields,
       value,
+      error: validate(value, name as FormFields),
     })
   }
 
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+
+    dispatch({
+      type: 'GET_INPUT',
+      name: name as FormFields,
+      value,
+      error: validate(value, name as FormFields),
+      isDirty: true,
+    })
+  }
+
+  // Check if the form has any errors
+  const updateAndFindAllErrors = () => {
+    const errors: Record<FormFields, string> = {} as Record<FormFields, string>
+
+    Object.keys(state).forEach((field) => {
+      const formField = field as FormFields
+      const value = state[formField].value
+      const error = validate(value, formField)
+
+      if (error) {
+        errors[formField] = error
+
+        dispatch({
+          type: 'GET_INPUT',
+          name: formField,
+          value: value,
+          error: validate(value, formField),
+          isDirty: true,
+        })
+      }
+    })
+
+    return errors
+  }
+
   // Submit the form
-  const handleSubmit = () => {
+  const handleSubmit: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault()
+
+    const errors = updateAndFindAllErrors()
+
+    // Do not submit if there are errors
+    if (Object.keys(errors).length) {
+      return
+    }
+
     const form: VerificationForm = {
       [FormFields.Name]: state[FormFields.Name].value,
       [FormFields.Age]: state[FormFields.Age].value,
@@ -112,7 +137,14 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             id="wizard-form-name"
             value={state[FormFields.Name].value}
             onChange={handleChange}
+            placeholder="Enter your name"
+            onBlur={handleBlur}
           />
+          {state[FormFields.Name].error && state[FormFields.Name].isDirty && (
+            <small className="form-text text-danger">
+              {state[FormFields.Name].error}
+            </small>
+          )}
         </div>
 
         {/* Age */}
@@ -125,7 +157,14 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             id="wizard-form-age"
             value={state[FormFields.Age].value}
             onChange={handleChange}
+            placeholder="Enter your age"
+            onBlur={handleBlur}
           />
+          {state[FormFields.Age].error && state[FormFields.Age].isDirty && (
+            <small className="form-text text-danger">
+              {state[FormFields.Age].error}
+            </small>
+          )}
         </div>
 
         {/* Country */}
@@ -142,6 +181,13 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             <option value="US">USA</option>
             <option value="AU">Australia</option>
           </select>
+
+          {state[FormFields.Country].error &&
+            state[FormFields.Country].isDirty && (
+              <small className="form-text text-danger">
+                {state[FormFields.Country].error}
+              </small>
+            )}
         </div>
 
         {/* Packages */}
@@ -181,6 +227,13 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
             />
             <label htmlFor="wizard-form-package-super-safe">Super Safe</label>
           </div>
+
+          {state[FormFields.Package].error &&
+            state[FormFields.Package].isDirty && (
+              <small className="form-text text-danger">
+                {state[FormFields.Package].error}
+              </small>
+            )}
         </div>
 
         <p>Your premium is: 500HKD</p>
