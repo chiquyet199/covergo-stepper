@@ -5,6 +5,10 @@ import { CountryCodes, FormFields, FormState, Packages } from './types'
 export const validate = (value: string, fieldname: FormFields) => {
   switch (fieldname) {
     case FormFields.Name:
+      if (!value) {
+        return 'Name is required'
+      }
+
       if (value.length < 3) {
         return 'Name must be at least 3 characters long'
       }
