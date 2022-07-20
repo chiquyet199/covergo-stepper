@@ -9,16 +9,16 @@ export const validate = (value: string, fieldname: FormFields) => {
         return 'Name is required'
       }
 
+      if (!/^[a-zA-Z ]*$/.test(value)) {
+        return 'Name must contain only letters'
+      }
+
       if (value.length < 3) {
         return 'Name must be at least 3 characters long'
       }
 
       if (value.length > 100) {
         return 'Name must be at most 100 characters long'
-      }
-
-      if (!/^[a-zA-Z ]*$/.test(value)) {
-        return 'Name must contain only letters'
       }
 
       return ''
