@@ -27,16 +27,16 @@ export const validate = (value: string, fieldname: FormFields) => {
         return 'Age is required'
       }
 
+      if (!/^[0-9]*$/.test(value)) {
+        return 'Age must contain only digits'
+      }
+
       if (isNaN(Number(value)) || Number(value) < 1) {
         return 'Enter a valid age'
       }
 
       if (value.length > 3) {
         return 'Age must be at most 3 digits long'
-      }
-
-      if (!/^[0-9]*$/.test(value)) {
-        return 'Age must contain only digits'
       }
 
       return ''
