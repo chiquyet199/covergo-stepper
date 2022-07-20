@@ -101,7 +101,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
   }, [])
 
   // Check if the form has any errors
-  const updateAndFindAllErrors = useCallback((finalFormState: FormState) => {
+  const triggerErrors = useCallback((finalFormState: FormState) => {
     const errors = {} as Record<FormFields, string>
     const payload = {} as Record<FormFields, FormValue>
 
@@ -122,12 +122,10 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
       }
     })
 
-    dispatch({
-      type: FormActionTypes.SET_INPUT,
+    return {
+      errors,
       payload,
-    })
-
-    return errors
+    }
   }, [])
 
   // Submit the form
@@ -135,10 +133,16 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
     (e) => {
       e.preventDefault()
 
-      const errors = updateAndFindAllErrors(state)
+      const { errors, payload } = triggerErrors(state)
 
       // Do not submit if there are errors
       if (Object.keys(errors).length) {
+        // Update the form state with the errors
+        dispatch({
+          type: FormActionTypes.SET_INPUT,
+          payload,
+        })
+
         return
       }
 
@@ -152,7 +156,7 @@ const WizardVerificationForm: React.FC<Props> = ({ onBack, onSubmit }) => {
 
       onSubmit(form)
     },
-    [onSubmit, premium, state, updateAndFindAllErrors]
+    [onSubmit, premium, state, triggerErrors]
   )
 
   useEffect(() => {
