@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import WizardVerificationForm from './WizardVerificationForm'
 
 describe('Wizard VerificationForm suite', () => {
@@ -27,36 +28,35 @@ describe('Wizard VerificationForm suite', () => {
     const onBack = jest.fn()
     render(<WizardVerificationForm onBack={onBack} onSubmit={() => null} />)
 
-    screen.getByText('Back').click()
+    userEvent.click(screen.getByText('Back'))
     expect(onBack).toHaveBeenCalled()
   })
 
-  test('calls onSubmit when the submit button is clicked', () => {
+  test('calls onSubmit when the submit button is clicked', async () => {
     const onSubmit = jest.fn()
 
-    render(<WizardVerificationForm onBack={() => null} onSubmit={onSubmit} />)
+    await render(
+      <WizardVerificationForm onBack={() => null} onSubmit={onSubmit} />
+    )
+
+    const nameInput = screen.getByTestId('wizard-form-name')
+    const ageInput = screen.getByTestId('wizard-form-age')
+    const countryInput = screen.getByTestId('wizard-form-country')
+    const standardOption = screen.getByTestId('wizard-form-package-Standard')
 
     // Type the name
-    fireEvent.change(screen.getByTestId('wizard-form-name'), {
-      target: { value: 'John' },
-    })
+    userEvent.type(nameInput, 'John Doe')
 
     // Type the age
-    fireEvent.change(screen.getByTestId('wizard-form-age'), {
-      target: { value: '30' },
-    })
+    userEvent.type(ageInput, '30')
 
     // Select the country
-    fireEvent.change(screen.getByTestId('wizard-form-country'), {
-      target: { value: 'US' },
-    })
+    userEvent.selectOptions(countryInput, '🇦🇺 Australia')
 
     // Click the package
-    fireEvent.click(screen.getByTestId('wizard-form-package-Standard'), {
-      target: { value: 'Standard' },
-    })
+    userEvent.click(standardOption)
 
-    fireEvent.click(screen.getByText('Next'))
+    userEvent.click(screen.getByText('Next'))
 
     expect(onSubmit).toHaveBeenCalled()
   })
